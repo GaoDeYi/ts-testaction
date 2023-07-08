@@ -71,10 +71,12 @@ function getFolderPath(root, type, name) {
             var typePath = '';
             if (type.trim().toLowerCase() == 'object' ||
                 type.trim().toLowerCase() == 'objects') {
+                core.notice("Content treat as an object");
                 typePath = 'Objects';
             }
             else if (type.trim().toLowerCase() == 'peripheral' ||
                 type.trim().toLowerCase() == 'peripherals') {
+                core.notice("Content treat as an peripheral");
                 typePath = 'Peripherals';
             }
             else {
