@@ -37,12 +37,12 @@ async function getFolderPath(root: string, type: string, name: string): Promise<
 
         if (type.trim().toLowerCase() == 'object' ||
             type.trim().toLowerCase() == 'objects') {
-                core.notice("Content treat as an object")
+            core.info("Content treat as an object")
             typePath = 'Objects'
         }
         else if (type.trim().toLowerCase() == 'peripheral' ||
             type.trim().toLowerCase() == 'peripherals') {
-            core.notice("Content treat as an peripheral")
+            core.info("Content treat as an peripheral")
             typePath = 'Peripherals'
         }
         else {
@@ -72,18 +72,18 @@ async function listCopyContent(): Promise<string[]> {
         var re = new RegExp('^V\\d+\\.\\d+', 'i');
         core.debug(`Searching in this path: ${testFolder}`)
         var filenames: string[] = fs.readdirSync(testFolder);
-        core.notice(`Found ${filenames.length} folder/files`)
+        core.info(`Found ${filenames.length} folder/files`)
         filenames.forEach(file => {
             if (re.test(file)) {
                 var newFileName = core.toPlatformPath(path.join(testFolder, file))
                 if (fs.lstatSync(newFileName).isDirectory()) {
-                    core.notice(`Added ${file} to copy list`)
+                    core.info(`Added ${file} to copy list`)
                     core.debug(`${file} folder leads to ${newFileName} path`)
                     results.push(newFileName)
                 }
             }
         })
-        core.notice(`Choose ${results.length} folders for copy`)
+        core.info(`Choose ${results.length} folders for copy`)
 
         return results
     } catch (error) {
@@ -109,7 +109,7 @@ async function copyContentToNewDestination(files: string[], destinationPath: str
         // Copy new content
         core.startGroup('Copy operation')
 
-        core.notice(`Creating ${destinationPath}`)
+        core.info(`Creating ${destinationPath}`)
 
         await io.mkdirP(destinationPath)
 
@@ -118,7 +118,7 @@ async function copyContentToNewDestination(files: string[], destinationPath: str
         files.forEach(oldPath => {
             var newPath: string = core.toPlatformPath(path.join(destinationPath, path.basename(oldPath)))
 
-            core.notice(`Copy ${oldPath} to ${newPath}`)
+            core.info(`Copy ${oldPath} to ${newPath}`)
 
             io.cp(oldPath, newPath, options)
         })
