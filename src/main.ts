@@ -20,7 +20,7 @@ async function run(): Promise<void> {
         var folders: string[] = await listCopyContent()
         copyContentToNewDestination(folders, destination);
 
-
+        core.setOutput("new-path", destination)
 
     } catch (error) {        
         if (error instanceof Error) {

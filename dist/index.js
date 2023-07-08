@@ -55,6 +55,7 @@ function run() {
             core.debug(`New path: ${destination}`);
             var folders = yield listCopyContent();
             copyContentToNewDestination(folders, destination);
+            core.setOutput("new-path", destination);
         }
         catch (error) {
             if (error instanceof Error) {
