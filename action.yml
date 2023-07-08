@@ -1,11 +1,20 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Copy files action'
+description: 'Copy Version folders from a to b'
+author: 'Gaodeyi'
 inputs:
-  milliseconds: # change this
+  repository-name:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'The name of the repository'
+  destination-root:
+    required: true
+    description: 'The root of the destination to copy to'
+  object-type:
+    required: true
+    description: 'The type the object is. Allowed input: Object, Objects, Peripheral, Peripherals'
+    default: 'options'
+outputs:
+  new-path:
+    description: 'The new output path, if successfully copied'
 runs:
   using: 'node16'
   main: 'dist/index.js'
