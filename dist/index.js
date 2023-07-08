@@ -98,9 +98,9 @@ function listCopyContent() {
             core.startGroup('Folders to copy');
             const fs = __nccwpck_require__(147);
             var path = __nccwpck_require__(17);
-            const testFolder = process.env['GITHUB_PATH'];
+            const testFolder = process.env['GITHUB_WORKSPACE'];
             if (!fs.existsSync(testFolder)) {
-                throw new Error("GITHUB Path not set to a correct folder");
+                throw new Error("GITHUB_WORKSPACE Path not set to a correct folder");
             }
             var re = new RegExp('^V\\d+\\.\\d+', 'i');
             core.debug(`Searching in this path: ${testFolder}`);
