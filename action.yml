@@ -11,6 +11,12 @@ inputs:
     required: true
     description: 'The type the object is. Allowed input: Object, Objects, Peripheral, Peripherals'
     default: 'options'
+  is-obselete:
+    description: 'Set if this is an obselete object'
+    default: 'false'
+  is-outdated:
+    description: 'Set if this is an outdated object'
+    default: 'false'
 outputs:
   new-path:
     description: 'The new output path, if successfully copied'
