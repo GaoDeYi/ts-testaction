@@ -3,7 +3,6 @@ description: 'Copy Version folders from a to b'
 author: 'Gaodeyi'
 inputs:
   repository-name:
-    required: true
     description: 'The name of the repository'
   destination-root:
     required: true

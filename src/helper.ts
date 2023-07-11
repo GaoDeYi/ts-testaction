@@ -1,19 +1,26 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 import * as io from '@actions/io'
-export async function getFolderPath(root: string, type: string, name: string): Promise<string> {
+
+export enum ObjectState {
+    Release,
+    Obselete,
+    Outdated
+}
+
+export async function getFolderPath(root: string, type: string, name: string, state: ObjectState): Promise<string> {
     try {
         var path = require('path');
         var typePath: string = '';
 
         if (type.trim().toLowerCase() == 'object' ||
             type.trim().toLowerCase() == 'objects') {
-            core.info("Content treat as an object")
+            core.info("Content handled as an object")
             typePath = 'Objects'
         }
         else if (type.trim().toLowerCase() == 'peripheral' ||
             type.trim().toLowerCase() == 'peripherals') {
-            core.info("Content treat as an peripheral")
+            core.info("Content handled as an peripheral")
             typePath = 'Peripherals'
         }
         else {
@@ -28,7 +35,7 @@ export async function getFolderPath(root: string, type: string, name: string): P
         throw error
     }
 }
-export async function listCopyContent(): Promise<string[]> {
+export async function listCopyContent(workspacePath: string): Promise<string[]> {
     var results: string[] = [];
     try {
         core.startGroup('Folders to copy')
@@ -41,12 +48,12 @@ export async function listCopyContent(): Promise<string[]> {
         }
 
         var re = new RegExp('^V\\d+\\.\\d+', 'i');
-        core.debug(`Searching in this path: ${testFolder}`)
-        var filenames: string[] = fs.readdirSync(testFolder);
+        core.debug(`Searching in this path: ${workspacePath}`)
+        var filenames: string[] = fs.readdirSync(workspacePath);
         core.info(`Found ${filenames.length} folder/files`)
         filenames.forEach(file => {
             if (re.test(file)) {
-                var newFileName = core.toPlatformPath(path.join(testFolder, file))
+                var newFileName = core.toPlatformPath(path.join(workspacePath, file))
                 if (fs.lstatSync(newFileName).isDirectory()) {
                     core.info(`Added ${file} to copy list`)
                     core.debug(`${file} folder leads to ${newFileName} path`)
@@ -58,7 +65,6 @@ export async function listCopyContent(): Promise<string[]> {
 
         return results
     } catch (error) {
-        core.endGroup();
         // rethrow error
         throw error
     } finally {
@@ -99,7 +105,6 @@ export async function copyContentToNewDestination(files: string[], destinationPa
 
     } catch (error) {
         core.error(`At least one folder was not copied`)
-        core.endGroup();
 
         // rethrow error
         throw error

@@ -40,20 +40,23 @@ describe('Function getFolderPath', () => {
     test.each(validObjectType)('\'$type\' is a valid object-type', async ({ type }) => {
         const path: string = 'C:\\temp\\';
         const name: string = 'Name';
-        await expect(() => helper.getFolderPath(path, type, name)).not.toThrow(Error);
+        const objectState: helper.ObjectState = helper.ObjectState.Release;
+        await expect(() => helper.getFolderPath(path, type, name, objectState)).not.toThrow(Error);
     });
     test.each(invalidObjectType)('\'$type\' is an invalid object-type', async ({ type }) => {
         const path: string = 'C:\\temp\\';
         const name: string = 'Name';
+        const objectState: helper.ObjectState = helper.ObjectState.Release;
 
-        await expect(() => helper.getFolderPath(path, type, name)).rejects.toThrow(Error);
+        await expect(() => helper.getFolderPath(path, type, name, objectState)).rejects.toThrow(Error);
     });
     test('path is build correctly', async () => {
         const path: string = 'C:\\temp\\';
         const objectType: string = 'Object';
         const name: string = 'TestName';
+        const objectState: helper.ObjectState = helper.ObjectState.Release;
 
-        await expect(helper.getFolderPath(path, objectType, name)).resolves.toBe('C:\\temp\\Objects\\TestName');
+        await expect(helper.getFolderPath(path, objectType, name, objectState)).resolves.toBe('C:\\temp\\Objects\\TestName');
         await expect(mockedFetch).toHaveBeenCalled()
     });
 }) 
